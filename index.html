@@ -1,122 +1,359 @@
 <!DOCTYPE html>
-
 <html lang="en-us">
-
 <head>
 
-  <meta charset="UTF-8">
-  <title>Train Schedule Tracker</title>
-  
-  <!-- Reset File -->
-  <link rel="stylesheet" type="text/css" href="css/reset.css">
-    
-  <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-  <!-- CSS File -->
-  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title>TrainSchedule.github.io</title>
 
   <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery.js"></script>
-  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href=https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+    <!-- CSS File -->
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+
   <!-- Firebase Reference -->
   <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
 
-  <!-- MetroHero Reference -->
-  <!-- <script curl -H "X-API-KEY: c629ce7c-43c5-4e4f-81e6-2d70dcc42759" https:https://dcmetrohero.com/api/v1></script> -->
-
   <!-- Moment.js Reference -->
   <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/es-us.js" integrity="sha256-GLtGssLoLnMtXFDxuUAnn+DU02rievBO5E7B5/P50ik=" crossorigin="anonymous"></script>
 </head>
 
 <body>
-
-  <!-- Train Schedule Tracker -->
-  <div class="container">
-
-    <!-- Jumbotron -->
-    <div class="jumbotron" style="background-color:rgb(19, 19, 228); color: white">
-      <h1 class="text-center">Train Time Ticker</h1>
-      <h3 class="text-center">Hop Aboard The Train Of DOOM!</h3>
+<div class="container" id="jumbocontainer">
+    <!-- Use any element to open the sidenav -->
+    <div class="jumbotron justify-content-center" style="background-color:rgb(75, 75, 224); color: white">
+        <button style="float: left" class="btn btn-primary bg-info"><span onclick="openNav()">Menu</span></button>     
+        <h1 class="text-center">Hell on Wheels!</h1>
+        <h3 class="text-center">Pain Train</h3>
+        <img style="float: right" src="images/DCMetro.png" alt="DCMetro" class="img-fluid" height="230px" width="230px" id="img">
     </div>
 
-    <div class="row">
-      <div class="col-xl-12">
-        <!-- Current Trains-->
-        <div class="card xl-4">
-          <div class="card-header" style="background-color:rgb(75, 75, 224); color: white"><h4>Current Train Schedule</h4></div>
-          <div class="card-body">
-            <table class="table table-sm table-hover" id='train-table'>
-              <thead>
-                <tr>
-                  <th scope="col"><b>Train Name</b></th>
-                  <th scope="col"><b>Destination</b></th>
-                  <th scope="col"><b>Frequency (min)</b></th>
-                  <th scope="col"><b>Next Arrival</b></th>
-                  <th scope="col"><b>Minutes Away</b></th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <ul class="list-unstyled components">
+            <li>
+                <a href="./index.html"><i class="fa fa-search"  style="color: red;"></i><strong>  Add Train</strong></a>
+            </li>
+            <li>
+                <a href="#metro-line-menu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <i class="fa fa-caret-down" style="color: red;"></i><strong>  Metro Lines</strong></a>
+                <ul class="collapse list-styled" id="metro-line-menu">
+                    <ls><a href="#"><i class="fa fa-subway" style="color: red;"></i>  Red Line</a></ls>
+                    <ls><a href="#"><i class="fa fa-subway" style="color: orange;"></i>  Orange Line</a></ls>
+                    <ls><a href="#"><i class="fa fa-subway" style="color: yellow;"></i>  Yellow Line</a></ls>
+                    <ls><a href="#"><i class="fa fa-subway" style="color: greenyellow;"></i>  Green Line</a></ls>
+                    <ls><a href="#"><i class="fa fa-subway" style="color: blue"></i>  Blue Line</a></ls>
+                    <ls><a href="#"><i class="fa fa-subway" style="color: silver;"></i>  Silver Line</a></ls>
+                    </ls>
+                </ul>
+            </li>
+            <li>
+                <a href="#metro-station-menu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <i class="fa fa-caret-down" style="color: red;"></i><strong>  Metro Stations</strong></a>
+                <ul class="collapse list-styled" id="metro-station-menu">
+                    <ls><a href="#"><i class="fa fa-map-marker">  Metro Center<span> (A01)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Farragut North<span> (A02)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Dupont Circle<span> (A03)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Woodley Park-Zoo/Adams Morgan<span> (A04)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Cleveland Park<span> (A05)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Van Ness-UDC<span> (A06)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Tenleytown-AU<span> (A07)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Friendship Heights<span> (A08)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Bethesda<span> (A09)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Medical Center<span> (A10)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Grosvenor-Strathmore<span> (A11)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  White Flint<span> (A12)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Twinbrook<span> (A13)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Rockville<span> (A14)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Shady Grove<span> (A15)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Shady Grove Yard<span> (A99)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Gallery Pl-Chinatown<span> (B01)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Judiciary Square<span> (B02)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Union Station<span> (B03)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  New York Ave-Florida Ave-Gallaudet U<span> (B35)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Rhode Island Ave-Brentwood<span> (B04)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Brookland-CUA<span> (B05)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Fort Totten<span> (B06)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Takoma<span> (B07)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Silver Spring<span> (B08)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Forest Glen<span> (B09)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Wheaton<span> (B10)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Glenmont<span> (B11)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Glenmont Yard<span> (B98)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Brentwood Yard<span> (B99)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Metro Center<span> (C01)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  McPherson Sq<span> (C02)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Farragut West<span> (C03)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Foggy Bottom-GWU<span> (C04)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Rosslyn<span> (C05)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Arlington Cemetery<span> (C06)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Pentagon<span> (C07)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Pentagon City<span> (C08)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Crystal City<span> (C09)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Ronald Reagan Washington National Airport<span> (C10)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Potomac Yard<span> (C11)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Braddock Road<span> (C12)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  King Street<span> (C13)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Eisenhower Ave<span> (C14)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Huntington<span> (C15)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  C & J Junction<span> (C97)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Alexandria Yard Leads<span> (C98)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Alexandria Yard<span> (C99)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Federal Triangle<span> (D01)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Smithsonian<span> (D02)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  L'Enfant Plaza<span> (D03)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Federal Center SW<span> (D04)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Capitol South<span> (D05)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Eastern Market<span> (D06)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Potomac Ave<span> (D07)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Stadium-Armory<span> (D08)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Minnesota Ave<span> (D09)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Deanwood<span> (D10)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Cheverly<span> (D11)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Landover<span> (D12)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  New Carrolton<span> (D13)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  New Carrolton Yard<span> (D99)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Mt Vernon Sq/7th St-Convention Center<span> (E01)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Shaw-Howard U<span> (E02)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  U St/African-Amer Civil War Memorial/Cardozo<span> (E03)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Columbia Heights<span> (E04)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Georgia Ave-Petworth<span> (E05)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Fort Totten<span> (E06)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  West Hyattsville<span> (E07)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Prince George's Plaza<span> (E08)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  College Park-U of MD<span> (E09)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Greenbelt<span> (E10)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Greenbelt Yard<span> (E99)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Gallery Pl-Chinatown<span> (F01)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Archives-Navy Mem'l-Penn Quarter<span> (F02)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  L'Enfant Plaza<span> (F03)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Waterfront-SEU<span> (F04)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Navy Yard<span> (F05)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Anacostia<span> (F06)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Congress Heights<span> (F07)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Southern Ave<span> (F08)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Naylor Road<span> (F09)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Suitland<span> (F10)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Branch Avenue<span> (F11)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Branch Avenue Yard<span> (F99)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Benning Road<span> (G01)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Capitol Heights<span> (G02)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Addison Road-Seat Pleasant<span> (G03)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Morgan Boulevard<span> (G04)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Largo Town Center<span> (G05)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Quaker Lane<span> (J01)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Van Dorn Street<span> (J02)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Franconia-Springfield<span> (J03)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Court House<span> (K01)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Clarendon<span> (K02)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Virginia Sq-GMU<span> (K03)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Ballston-MU<span> (K04)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  East Falls Church<span> (K05)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  West Falls Church-VT/UVA<span> (K06)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Dunn Loring-Merrifield<span> (K07)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Vienna/Fairfax-GMU<span> (K08)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Falls Church Yard<span> (K99)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  McLean<span> (N01)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Tysons Corner<span> (N02)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Greensboro<span> (N03)</span></i></a></ls>
+                    <ls><a href="#"><i class="fa fa-map-marker">  Spring Hill<span> (N04)</span></i></a></ls>
+                </ul>
+            </li>
+        </ul>
     </div>
 
+
+
     <div class="row">
-      <div class="col-xl-12">
-        <!-- Add Train  -->
-        <div class="card xl-4">
-          <div class="card-header" style="background-color:rgb(75, 75, 224); color: white"><h4>Add Train</h4></div>
-          <div class="card-body">
+        <div class="col-lg-12">
+        <!-- Train Schedule -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                <h3 class="panel-title">
+                    <strong>Train Game</strong>
+                </h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover" id="train-table">
+                        <thead>
+                        <tr>
+                            <th>Metro Line</th>
+                            <th>Station</th>
+                            <th>Frequency (min)</th>
+                            <th>Next Arrival</th>
+                            <th>Minutes Away</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Add Train  -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                <h3 class="panel-title">
+                    <strong>Add Train</strong>
+                </h3>
+                </div>
+                <div class="panel-body" id="train-table">
 
-            <!-- Entry Form -->
-            <form>
-              <div class="form-group">
-                <label for="train-name-input"><b>Train Name</b></label>
-                <input class="form-control" id="train-name-input" placeholder="Red Line" type="text">
-              </div>
-              <div class="form-group">
-                <label for="destination-input"><b>Destination</b></label>
-                <input class="form-control" id="destination-input" placeholder="Shady Grove" type="text">
-              </div>
-              <div class="form-group">
-                <label for="firstTrainTime-input"><b>First Train Time (HH:mm - military time)</b></label>
-                <input class="form-control" id="firstTrainTime-input" placeholder="24:00" type="time">
-              </div>
-              <div class="form-group">
-                <label for="frequency-input"><b>Frequency</b></label>
-                <input class="form-control" id="frequency-input" placeholder="25" type="text">
-              </div>
-              <button class="btn btn-primary float-right" id="add-train-btn">Submit</button>
-            </form>
-
-          </div>
+                <!-- Entry Form -->
+                    <form>
+                        <div class="form-group">
+                            <label for="sel1">Metro Lines</label>
+                            <select class="form-control" id="sel1">
+                                <option>Red</option>
+                                <option>Orange</option>
+                                <option>Yellow</option>
+                                <option>Green</option>
+                                <option>Blue</option>
+                                <option>Silver</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sel1">Metro Stations</label>
+                            <select class="form-control" id="alerts-widget-next-train-all" name="alerts-widget-next-train-all" required="" data-error="Please Select a Train Station" tabindex="1">
+                                <option value="G03">Addison Road-Seat Pleasant</option>
+                                <option value="F06">Anacostia</option>
+                                <option value="F02">Archives-Navy Memorial-Penn Quarter</option>
+                                <option value="C06">Arlington Cemetery</option>
+                                <option value="K04">Ballston-MU</option>
+                                <option value="G01">Benning Road</option>
+                                <option value="A09">Bethesda</option>
+                                <option value="C12">Braddock Road</option>
+                                <option value="F11">Branch Ave</option>
+                                <option value="B05">Brookland-CUA</option>
+                                <option value="G02">Capitol Heights</option>
+                                <option value="D05">Capitol South</option>
+                                <option value="D11">Cheverly</option>
+                                <option value="K02">Clarendon</option>
+                                <option value="A05">Cleveland Park</option>
+                                <option value="E09">College Park-U of Md</option>
+                                <option value="E04">Columbia Heights</option>
+                                <option value="F07">Congress Heights</option>
+                                <option value="K01">Court House</option>
+                                <option value="C09">Crystal City</option>
+                                <option value="D10">Deanwood</option>
+                                <option value="K07">Dunn Loring-Merrifield</option>
+                                <option value="A03">Dupont Circle</option>
+                                <option value="K05">East Falls Church</option>
+                                <option value="D06">Eastern Market</option>
+                                <option value="C14">Eisenhower Avenue</option>
+                                <option value="A02">Farragut North</option>
+                                <option value="C03">Farragut West</option>
+                                <option value="D04">Federal Center SW</option>
+                                <option value="D01">Federal Triangle</option>
+                                <option value="C04">Foggy Bottom-GWU</option>
+                                <option value="B09">Forest Glen</option>
+                                <option value="B06,E06">Fort Totten</option>
+                                <option value="J03">Franconia-Springfield</option>
+                                <option value="A08">Friendship Heights</option>
+                                <option value="B01,F01">Gallery Pl-Chinatown</option>
+                                <option value="E05">Georgia Ave-Petworth</option>
+                                <option value="B11">Glenmont</option>
+                                <option value="E10">Greenbelt</option>
+                                <option value="N03">Greensboro</option>
+                                <option value="A11">Grosvenor-Strathmore</option>
+                                <option value="C15">Huntington</option>
+                                <option value="B02">Judiciary Square</option>
+                                <option value="C13">King St-Old Town</option>
+                                <option value="D03,F03">L'Enfant Plaza</option>
+                                <option value="D12">Landover</option>
+                                <option value="G05">Largo Town Center</option>
+                                <option value="N01">McLean</option>
+                                <option value="C02">McPherson Square</option>
+                                <option value="A10">Medical Center</option>
+                                <option value="A01,C01">Metro Center</option>
+                                <option value="D09">Minnesota Ave</option>
+                                <option value="G04">Morgan Boulevard</option>
+                                <option value="E01">Mt Vernon Sq 7th St-Convention Center</option>
+                                <option value="F05">Navy Yard-Ballpark</option>
+                                <option value="F09">Naylor Road</option>
+                                <option value="D13">New Carrollton</option>
+                                <option value="B35">NoMa-Gallaudet U</option>
+                                <option value="C07">Pentagon</option>
+                                <option value="C08">Pentagon City</option>
+                                <option value="D07">Potomac Ave</option>
+                                <option value="E08">Prince George's Plaza</option>
+                                <option value="B04">Rhode Island Ave-Brentwood</option>
+                                <option value="A14">Rockville</option>
+                                <option value="C10">Ronald Reagan Washington National Airport</option>
+                                <option value="C05">Rosslyn</option>
+                                <option value="A15">Shady Grove</option>
+                                <option value="E02">Shaw-Howard U</option>
+                                <option value="B08">Silver Spring</option>
+                                <option value="T81">Silver Spring Transit Center</option>
+                                <option value="D02">Smithsonian</option>
+                                <option value="F08">Southern Avenue</option>
+                                <option value="N04">Spring Hill</option>
+                                <option value="D08">Stadium-Armory</option>
+                                <option value="F10">Suitland</option>
+                                <option value="B07">Takoma</option>
+                                <option value="A07">Tenleytown-AU</option>
+                                <option value="A13">Twinbrook</option>
+                                <option value="N02">Tysons Corner</option>
+                                <option value="E03">U Street/African-Amer Civil War Memorial/Cardozo</option>
+                                <option value="B03">Union Station</option>
+                                <option value="J02">Van Dorn Street</option>
+                                <option value="A06">Van Ness-UDC</option>
+                                <option value="K08">Vienna/Fairfax-GMU</option>
+                                <option value="K03">Virginia Square-GMU</option>
+                                <option value="F04">Waterfront</option>
+                                <option value="K06">West Falls Church-VT/UVA</option>
+                                <option value="E07">West Hyattsville</option>
+                                <option value="B10">Wheaton</option>
+                                <option value="A12">White Flint</option>
+                                <option value="N06">Wiehle-Reston East</option>
+                                <option value="A04">Woodley Park-Zoo/Adams Morgan</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="first-train-input">First Train Time</label>
+                            <input type="text" class="form-control js-time-picker" value="17:00">
+                            </input>
+                        </div>
+                        <div class="form-group">
+                            <label for="frequency-input">Frequency (min)</label>
+                            <select class="form-control" id="sel1">
+                                <option>5</option>
+                                <option>10</option>
+                                <option>15</option>
+                                <option>20</option>
+                                <option>25</option>
+                                <option>30</option>
+                                <option>35</option>
+                                <option>40</option>
+                                <option>45</option>
+                                <option>50</option>
+                                <option>55</option>
+                                <option>60</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary" id="add-train-btn">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
+    </div>
 </div>
-
-<!-- Start Footer --> 
-    <footer>
-        <div class="footer-copyright text-center py-3">© 2019 Copyright:
-            <a href="weezie33.github.io"> weezie33.github.io</a>
-        </div>
-    </footer> 
-<!-- End Footer -->
-
-
-<!-- END div Area -->
-
-<!-- Start JS  -->
-<script src="javascript/main.js"></script>
-<!-- END JS  -->
-<!-- End Container -->
-<!-- END Body  -->
+<footer>
+    <div class="footer-copyright text-center py-3">© 2019 Copyright:
+        <a href="weezie33.github.io"> weezie33.github.io</a>
+    </div>
+</footer> 
+  <!-- Script -->
+  <script src="javascript/main.js"></script>
+  <script src="javascript/rail.js"></script>
 </body>
-<!-- END html  -->
 </html>
