@@ -204,24 +204,25 @@
                     <strong>Add Train</strong>
                 </h3>
                 </div>
-                <div class="panel-body" id="train-table">
-
+                <div class="panel-body" >
                 <!-- Entry Form -->
                     <form>
                         <div class="form-group">
                             <label for="sel1">Metro Lines</label>
                             <select class="form-control" id="sel1">
-                                <option>Red</option>
-                                <option>Orange</option>
-                                <option>Yellow</option>
-                                <option>Green</option>
-                                <option>Blue</option>
-                                <option>Silver</option>
+                                <option>Choose a Line</option>
+                                <option class="trainColor" >Red</option>
+                                <option class="trainColor">Orange</option>
+                                <option class="trainColor">Yellow</option>
+                                <option class="trainColor">Green</option>
+                                <option class="trainColor">Blue</option>
+                                <option class="trainColor">Silver</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="sel1">Metro Stations</label>
-                            <select class="form-control" id="alerts-widget-next-train-all" name="alerts-widget-next-train-all" required="" data-error="Please Select a Train Station" tabindex="1">
+                            <select class="form-control" id="alerts-widget-next-train-all" name="alerts-widget-next-train-all" required="" data-error="Please input a Train Station" tabindex="1">
+                                <option>Enter a Destination</option>
                                 <option value="G03">Addison Road-Seat Pleasant</option>
                                 <option value="F06">Anacostia</option>
                                 <option value="F02">Archives-Navy Memorial-Penn Quarter</option>
@@ -317,13 +318,12 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="first-train-input">First Train Time</label>
-                            <input type="text" class="form-control js-time-picker" value="17:00">
-                            </input>
+                            <input id="first-train-input" type="text" class="form-control js-time-picker" placeholder="HH:mm">
                         </div>
                         <div class="form-group">
                             <label for="frequency-input">Frequency (min)</label>
-                            <select class="form-control" id="sel1">
+                            <select class="form-control" id="timeOption">
+                                <option>Pick an option</option>
                                 <option>5</option>
                                 <option>10</option>
                                 <option>15</option>

@@ -1,64 +1,88 @@
 /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
 function openNav() {
-      document.getElementById("mySidenav").style.width = "250px";
-    document.getElementById("main").style.marginLeft = "250px";
-};
+    document.getElementById('mySidenav').style.width = '250px';
+    document.getElementById('main').style.marginLeft = '250px';
+}
 
 /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
 function closeNav() {
-  document.getElementById("mySidenav").style.width = "0";
-  document.getElementById("main").style.marginLeft = "0";
-};
+    document.getElementById('mySidenav').style.width = '0';
+    document.getElementById('main').style.marginLeft = '0';
+}
 ///End of sidebar
-
-
+ 
 // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyDqGyKa7lIqnwaOk_oa83xXebTOC40Cbq4",
-    authDomain: "trainschedule-c04fd.firebaseapp.com",
-    databaseURL: "https://trainschedule-c04fd.firebaseio.com",
-    projectId: "trainschedule-c04fd",
-    storageBucket: "trainschedule-c04fd.appspot.com",
-    messagingSenderId: "747142750622"
-  };
-  firebase.initializeApp(config);
+var config = {
+    apiKey: 'AIzaSyDqGyKa7lIqnwaOk_oa83xXebTOC40Cbq4',
+    authDomain: 'trainschedule-c04fd.firebaseapp.com',
+    databaseURL: 'https://trainschedule-c04fd.firebaseio.com',
+    projectId: 'trainschedule-c04fd',
+    storageBucket: 'trainschedule-c04fd.appspot.com',
+    messagingSenderId: '747142750622'
 
-var trainData = firebase.database();
+};
 
+firebase.initializeApp(config);
+  var trainData = firebase.database();
+  var trainName;
+  var destination;
+  var frequency;
 
-$("#add-train-btn").on("click", function() {
+// Gets value from Metro Line WHEN it is selected
 
-  // User input
-  var trainName = $("#train-name-input").val().trim();
-  var destination = $("#destination-input").val().trim();
-  var firstTrain = $("#first-train-input").val().trim();
-  var frequency = $("#frequency-input").val().trim();
+$('select#sel1').change(function() {
+  var selectedLine = $(this)
+  .children('option:selected')
+  .val();
+    trainName = selectedLine;
+});
 
-  // Temp object for train data
+// Gets text from Metro Station WHEN it is selected
+$('select#alerts-widget-next-train-all').change(function() {
+    var selectedDest = $(this)
+        .children('option:selected')
+        .text();
+    destination = selectedDest;
+});
+
+$('select#timeOption').change(function() {
+    var selectedTime = $(this)
+    .children('option:selected')
+    .val();
+    frequency = selectedTime;
+});
+
+$('#add-train-btn').on('click', function(event) {
+  event.preventDefault();
+  var firstTrain = $('#first-train-input')
+    .val()
+    .trim();
+
+// Temp object for train data
   var newTrain = {
-    name: trainName,
-    destination: destination,
-    firstTrain: firstTrain,
-    frequency: frequency
+      name: trainName,
+      destination: destination,
+      firstTrain: firstTrain,
+      frequency: frequency
   };
 
-  // Uploads train data to bd
-  trainData.ref().push(newTrain);
+// Uploads train data to bd
+trainData.ref().push(newTrain);
 
-  // console log
+// console log
   console.log(newTrain.name);
   console.log(newTrain.destination);
   console.log(newTrain.firstTrain);
   console.log(newTrain.frequency);
 
-  // Alert
-  alert("Train successfully added");
+// Alert
+alert('Train successfully added');
 
-  // Clears text-boxes
-  $("#train-name-input").val("");
-  $("#destination-input").val("");
-  $("#first-train-input").val("");
-  $("#frequency-input").val("");
+// Clears text-boxes
+  $('#train-name-input').val('');
+  $('#destination-input').val('');
+  $('#first-train-input').val('');
+  $('#frequency-input').val('');
   return false;
 });
 
@@ -95,8 +119,7 @@ trainData.ref().on("child_added", function(childSnapshot) {
   console.log("timeArrival:", timeArrival);
 
   // Add each train's data into the table
-  $("#train-table > tbody").append("<tr><td>" + timeName + "</td><td>" + timeDestination + "</td><td>" +
-          timeFrequency + "</td><td>" + timeArrival + "</td><td>" + timeMinutes + "</td></tr>");
+  $("#train-table > tbody").append("<tr><td>" + timeName + "</td><td>" + timeDestination + "</td><td>" + timeFrequency + "</td><td>" + timeArrival + "</td><td>" + timeMinutes + "</td></tr>");
 
 
   // Create the new row
